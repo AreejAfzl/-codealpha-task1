@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .calculator {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .display {
+            background-color: #333;
+            color: white;
+            font-size: 2em;
+            text-align: right;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .btn {
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            padding: 20px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #ddd;
+        }
+
+        .btn:active {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="btn" onclick="clearDisplay()">C</button>
+            <button class="btn" onclick="appendNumber('7')">7</button>
+            <button class="btn" onclick="appendNumber('8')">8</button>
+            <button class="btn" onclick="appendNumber('9')">9</button>
+            <button class="btn" onclick="appendOperation('/')">/</button>
+            <button class="btn" onclick="appendNumber('4')">4</button>
+            <button class="btn" onclick="appendNumber('5')">5</button>
+            <button class="btn" onclick="appendNumber('6')">6</button>
+            <button class="btn" onclick="appendOperation('*')">*</button>
+            <button class="btn" onclick="appendNumber('1')">1</button>
+            <button class="btn" onclick="appendNumber('2')">2</button>
+            <button class="btn" onclick="appendNumber('3')">3</button>
+            <button class="btn" onclick="appendOperation('-')">-</button>
+            <button class="btn" onclick="appendNumber('0')">0</button>
+            <button class="btn" onclick="appendOperation('.')">.</button>
+            <button class="btn" onclick="calculate()">=</button>
+            <button class="btn" onclick="appendOperation('+')">+</button>
+        </div>
+    </div>
+    <script>
+        let display = document.getElementById('display');
+        let currentInput = '';
+        let result = '';
+
+        function appendNumber(number) {
+            if (result) {
+                currentInput = number;
+                result = '';
+            } else {
+                currentInput += number;
+            }
+            updateDisplay(currentInput);
+        }
+
+        function appendOperation(op) {
+            if (currentInput === '' && op !== '.') return; // Prevent starting with operator
+            if (currentInput !== '' || op === '.') {
+                currentInput += op;
+                updateDisplay(currentInput);
+            }
+        }
+
+        function clearDisplay() {
+            currentInput = '';
+            result = '';
+            updateDisplay('0');
+        }
+
+        function calculate() {
+            try {
+                result = eval(currentInput); // Use eval cautiously; consider using a safer alternative for production code
+                updateDisplay(result);
+                currentInput = result;
+            } catch (error) {
+                updateDisplay('Error');
+                currentInput = '';
+            }
+        }
+
+        function updateDisplay(value) {
+            display.textContent = value;
+        }
+    </script>
+</body>
+</html>
